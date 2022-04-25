@@ -480,6 +480,9 @@ where
             BinaryOp::Sub => {
                 op!("-=")
             }
+            BinaryOp::Pipe => {
+                return;
+            }
             BinaryOp::Mul => {
                 op!("*=")
             }

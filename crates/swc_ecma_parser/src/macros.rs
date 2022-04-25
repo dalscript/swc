@@ -25,6 +25,9 @@ macro_rules! tok {
     ('-') => {
         crate::token::Token::BinOp(crate::token::BinOpToken::Sub)
     };
+    ("|>") => {
+        crate::token::Token::BinOp(crate::token::BinOpToken::Pipe)
+    };
     ("??") => {
         crate::token::Token::BinOp(crate::token::BinOpToken::NullishCoalescing)
     };

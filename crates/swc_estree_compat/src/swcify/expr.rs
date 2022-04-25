@@ -156,6 +156,9 @@ impl Swcify for BinaryExprOp {
             BinaryExprOp::Subtraction => {
                 op!(bin, "-")
             }
+            BinaryExprOp::Pipe => {
+                op!("|>")
+            }
             BinaryExprOp::Division => {
                 op!("/")
             }

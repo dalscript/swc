@@ -177,6 +177,8 @@ pub enum BinOpToken {
     /// `-`
     #[kind(starts_expr)]
     Sub,
+    /// `|>`
+    Pipe,
     /// `*`
     Mul,
     /// `/`
@@ -539,6 +541,7 @@ impl From<BinOpToken> for BinaryOp {
             BinOpToken::ZeroFillRShift => ZeroFillRShift,
             BinOpToken::Add => Add,
             BinOpToken::Sub => Sub,
+            BinOpToken::Pipe => Pipe,
             BinOpToken::Mul => Mul,
             BinOpToken::Div => Div,
             BinOpToken::Mod => Mod,

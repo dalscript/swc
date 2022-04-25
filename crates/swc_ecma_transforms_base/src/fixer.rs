@@ -398,7 +398,19 @@ impl VisitMut for Fixer<'_> {
         e.visit_mut_children_with(self);
 
         self.ctx = ctx;
-        self.wrap_with_paren_if_required(e)
+        self.wrap_with_paren_if_required(e);
+        if let Expr::Bin(ref mut e2) = *e {
+            if e2.op == op!("|>") {
+                if let Expr::Call(call) = &mut *e2.right {
+                    call.args.insert(0, ExprOrSpread {
+                        spread: None,
+                        expr: e2.left.clone()
+                    });
+                    *e = *e2.right.clone();
+                    return;
+                }
+            }
+        }
     }
 
     fn visit_mut_expr_or_spread(&mut self, e: &mut ExprOrSpread) {

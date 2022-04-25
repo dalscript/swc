@@ -1133,6 +1133,7 @@ define!({
         ZeroFillRShift,
         Add,
         Sub,
+        Pipe,
         Mul,
         Div,
         Mod,

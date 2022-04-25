@@ -88,6 +88,9 @@ macro_rules! op {
     (bin,"-") => {
         $crate::BinaryOp::Sub
     };
+    ("|>") => {
+        $crate::BinaryOp::Pipe
+    };
     ("*") => {
         $crate::BinaryOp::Mul
     };

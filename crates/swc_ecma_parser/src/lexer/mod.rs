@@ -380,6 +380,12 @@ impl<'a, I: Input> Lexer<'a, I> {
                     })));
                 }
 
+                // '|>'
+                if c == '|' && self.input.cur() == Some('>') {
+                    self.input.bump();
+                    return Ok(Some(BinOp(Pipe)));
+                }
+
                 BinOp(token)
             }
             '^' => {

@@ -35,6 +35,8 @@ pub enum BinaryOp {
     Add,
     /// `-`
     Sub,
+    /// `|>`
+    Pipe,
     /// `*`
     Mul,
     /// `/`
@@ -84,6 +86,7 @@ impl BinaryOp {
 
             BinaryOp::Add => 9,
             BinaryOp::Sub => 9,
+            BinaryOp::Pipe => 9,
             BinaryOp::Mul => 10,
             BinaryOp::Div => 10,
             BinaryOp::Mod => 10,

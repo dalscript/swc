@@ -183,6 +183,8 @@ pub enum BinaryExprOp {
     Addition,
     #[serde(rename = "-")]
     Subtraction,
+    #[serde(rename = "|>")]
+    Pipe,
     #[serde(rename = "/")]
     Division,
     #[serde(rename = "%")]

@@ -59,6 +59,7 @@ impl_simple_enum!(
         ZeroFillRShift,
         Add,
         Sub,
+        Pipe,
         Mul,
         Div,
         Mod,

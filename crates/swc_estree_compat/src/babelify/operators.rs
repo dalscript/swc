@@ -52,6 +52,7 @@ impl Babelify for BinaryOp {
             BinaryOp::ZeroFillRShift => BinaryOpOutput::BinOp(BinaryExprOp::UnsignedRightShift),
             BinaryOp::Add => BinaryOpOutput::BinOp(BinaryExprOp::Addition),
             BinaryOp::Sub => BinaryOpOutput::BinOp(BinaryExprOp::Subtraction),
+            BinaryOp::Pipe => BinaryOpOutput::BinOp(BinaryExprOp::Pipe),
             BinaryOp::Mul => BinaryOpOutput::BinOp(BinaryExprOp::Multiplication),
             BinaryOp::Div => BinaryOpOutput::BinOp(BinaryExprOp::Division),
             BinaryOp::Mod => BinaryOpOutput::BinOp(BinaryExprOp::Remainder),
