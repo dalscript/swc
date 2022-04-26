@@ -1,6 +1,6 @@
 {
-    "name": "@swc/helpers",
-    "version": "0.3.8",
+    "name": "@odenlang/swc-helpers",
+    "version": "0.0.0",
     "description": "External helpers for the swc project.",
     "esnext": "src/index.js",
     "module": "src/index.js",
@@ -25,7 +25,7 @@
     },
     "homepage": "https://swc.rs",
     "devDependencies": {
-        "@swc/cli": "^0.1.36",
-        "@swc/core": "^1.2.58"
+        "@odenlang/swc-cli": "0.0.0",
+        "@odenlang/swc-core": "0.0.0"
     }
 }

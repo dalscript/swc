@@ -1,6 +1,6 @@
 {
-    "name": "@swc/core-android-arm-eabi",
-    "version": "1.2.122",
+    "name": "@odenlang/swc-core-android-arm-eabi",
+    "version": "0.0.0",
     "os": [
         "android"
     ],
@@ -29,7 +29,7 @@
         "node": ">=10"
     },
     "publishConfig": {
-        "registry": "https://registry.npmjs.org/",
+        "registry": "https://npm.pkg.github.com/",
         "access": "public"
     },
     "repository": {

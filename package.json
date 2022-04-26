@@ -1,6 +1,6 @@
 {
-    "name": "@swc/core",
-    "version": "1.2.171",
+    "name": "@odenlang/swc-core",
+    "version": "0.0.0",
     "description": "Super-fast alternative for babel",
     "homepage": "https://swc.rs",
     "main": "./index.js",
@@ -47,7 +47,7 @@
         }
     },
     "publishConfig": {
-        "registry": "https://registry.npmjs.org/",
+        "registry": "https://npm.pkg.github.com/",
         "access": "public"
     },
     "types": "./index.d.ts",
@@ -83,7 +83,7 @@
         "@babel/preset-typescript": "^7.13.0",
         "@babel/types": "^7.14.0",
         "@napi-rs/cli": "^2.4.5",
-        "@swc/helpers": "^0.2.10",
+        "@odenlang/swc-helpers": "^0.2.10",
         "@taplo/cli": "^0.3.2",
         "@types/jest": "^26.0.23",
         "@types/node": "^14.14.41",
@@ -121,18 +121,18 @@
         "url": "https://opencollective.com/swc"
     },
     "optionalDependencies": {
-        "@swc/core-android-arm-eabi": "1.2.146",
-        "@swc/core-android-arm64": "1.2.146",
-        "@swc/core-darwin-arm64": "1.2.146",
-        "@swc/core-darwin-x64": "1.2.146",
-        "@swc/core-freebsd-x64": "1.2.146",
-        "@swc/core-linux-arm-gnueabihf": "1.2.146",
-        "@swc/core-linux-arm64-gnu": "1.2.146",
-        "@swc/core-linux-arm64-musl": "1.2.146",
-        "@swc/core-linux-x64-gnu": "1.2.146",
-        "@swc/core-linux-x64-musl": "1.2.146",
-        "@swc/core-win32-arm64-msvc": "1.2.146",
-        "@swc/core-win32-ia32-msvc": "1.2.146",
-        "@swc/core-win32-x64-msvc": "1.2.146"
+        "@odenlang/swc-core-android-arm-eabi": "0.0.0",
+        "@odenlang/swc-core-android-arm64": "0.0.0",
+        "@odenlang/swc-core-darwin-arm64": "0.0.0",
+        "@odenlang/swc-core-darwin-x64": "0.0.0",
+        "@odenlang/swc-core-freebsd-x64": "0.0.0",
+        "@odenlang/swc-core-linux-arm-gnueabihf": "0.0.0",
+        "@odenlang/swc-core-linux-arm64-gnu": "0.0.0",
+        "@odenlang/swc-core-linux-arm64-musl": "0.0.0",
+        "@odenlang/swc-core-linux-x64-gnu": "0.0.0",
+        "@odenlang/swc-core-linux-x64-musl": "0.0.0",
+        "@odenlang/swc-core-win32-arm64-msvc": "0.0.0",
+        "@odenlang/swc-core-win32-ia32-msvc": "0.0.0",
+        "@odenlang/swc-core-win32-x64-msvc": "0.0.0"
     }
 }

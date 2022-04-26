@@ -1,6 +1,6 @@
 {
-    "name": "@swc/core-linux-x64-gnu",
-    "version": "1.2.130",
+    "name": "@odenlang/swc-core-linux-x64-gnu",
+    "version": "0.0.0",
     "os": [
         "linux"
     ],
@@ -32,7 +32,7 @@
         "node": ">=10"
     },
     "publishConfig": {
-        "registry": "https://registry.npmjs.org/",
+        "registry": "https://npm.pkg.github.com/",
         "access": "public"
     },
     "repository": {
