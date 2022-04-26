@@ -169,6 +169,7 @@ jobs:
       - name: Install node dependencies
         shell: bash
         run: |
+          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ~/.npmrc
           yarn
       - name: Cache cargo registry
         uses: actions/cache@v2
@@ -227,6 +228,7 @@ jobs:
       - name: Install node dependencies
         shell: bash
         run: |
+          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ~/.npmrc
           yarn
 
       - name: Cleanup useless files to speedup
@@ -601,7 +603,6 @@ jobs:
       - name: Publish
         run: |
           echo "//npm.pkg.github.com/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ~/.npmrc
           npm publish --access public
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
