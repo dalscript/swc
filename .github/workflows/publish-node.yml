@@ -485,7 +485,12 @@ jobs:
           path: node_modules
           key: npm-cache-test-linux-aarch64-gnu-${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: yarn install --ignore-scripts --ignore-platform --registry https://registry.npmjs.org --network-timeout 300000
+        run: |
+          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+          yarn install --ignore-scripts --ignore-platform --network-timeout 300000
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build TypeScript
         run: yarn build:ts
       - name: Setup and run tests
@@ -520,7 +525,12 @@ jobs:
           path: node_modules
           key: npm-cache-test-linux-aarch64-musl-${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: yarn install --ignore-scripts --ignore-platform --registry https://registry.npmjs.org --network-timeout 300000
+        run: |
+          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+          yarn install --ignore-scripts --ignore-platform --network-timeout 300000
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build TypeScript
         run: yarn build:ts
       - name: Setup and run tests
@@ -562,7 +572,12 @@ jobs:
           path: node_modules
           key: npm-cache-test-linux-arm-gnueabihf-${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: yarn install --ignore-scripts --ignore-platform --registry https://registry.npmjs.org --network-timeout 300000
+        run: |
+          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+          yarn install --ignore-scripts --ignore-platform --network-timeout 300000
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build TypeScript
         run: yarn build:ts
       - name: Setup and run tests
