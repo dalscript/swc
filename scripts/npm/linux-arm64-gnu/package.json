@@ -37,9 +37,9 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/swc-project/swc.git"
+        "url": "git+https://github.com/odenlang/swc.git"
     },
     "bugs": {
-        "url": "https://github.com/swc-project/swc/issues"
+        "url": "https://github.com/odenlang/swc/issues"
     }
 }

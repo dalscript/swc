@@ -2,8 +2,8 @@ name: Publish (wasm)
 
 env:
   CARGO_INCREMENTAL: 0
-  CARGO_PROFILE_RELEASE_LTO: "fat"
-  CI: "1"
+  CARGO_PROFILE_RELEASE_LTO: 'fat'
+  CI: '1'
 
 on:
   create:
@@ -49,7 +49,7 @@ jobs:
       - name: Publish
         run: |
           echo "//npm.pkg.github.com/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-          (cd crates/binding_core_wasm/pkg && npm publish --access public)
+          (cd crates/binding_core_wasm/pkg && npm publish --access public --registry https://npm.pkg.github.com/)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -92,7 +92,7 @@ jobs:
       - name: Publish
         run: |
           echo "//npm.pkg.github.com/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-          (cd crates/binding_core_wasm/pkg && npm publish --access public)
+          (cd crates/binding_core_wasm/pkg && npm publish --access public --registry https://npm.pkg.github.com/)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
