@@ -196,7 +196,12 @@ jobs:
         if: ${{ matrix.settings.setup }}
         shell: bash
       - name: Install dependencies
-        run: yarn install --ignore-scripts --registry https://registry.npmjs.org --network-timeout 300000
+        run: |
+          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+          yarn install --ignore-scripts --network-timeout 300000
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build in docker
         uses: addnab/docker-run-action@v3
         if: ${{ matrix.settings.docker }}
@@ -301,7 +306,7 @@ jobs:
             whoami
             env
             freebsd-version
-            yarn install --ignore-scripts --registry https://registry.npmjs.org --network-timeout 300000
+            yarn install --ignore-scripts --network-timeout 300000
             yarn build
             cargo build -p swc_cli --release --features plugin
             cp ./target/release/swc .
@@ -344,7 +349,12 @@ jobs:
           path: node_modules
           key: npm-cache-test-${{ matrix.settings.target }}-${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: yarn install --ignore-scripts --registry https://registry.npmjs.org --network-timeout 300000
+        run: |
+          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+          yarn install --ignore-scripts --network-timeout 300000
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
@@ -383,7 +393,12 @@ jobs:
           path: node_modules
           key: npm-cache-test-linux-x64-gnu-${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: yarn install --ignore-scripts --registry https://registry.npmjs.org --network-timeout 300000
+        run: |
+          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+          yarn install --ignore-scripts --network-timeout 300000
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
@@ -422,7 +437,12 @@ jobs:
           path: node_modules
           key: npm-cache-test-x86_64-unknown-linux-musl-${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: yarn install --ignore-scripts --registry https://registry.npmjs.org --network-timeout 300000
+        run: |
+          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+          yarn install --ignore-scripts --network-timeout 300000
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
@@ -585,7 +605,12 @@ jobs:
           key: npm-cache-publish-${{ hashFiles('yarn.lock') }}
 
       - name: Install dependencies
-        run: yarn install --ignore-scripts --registry https://registry.npmjs.org --network-timeout 300000
+        run: |
+          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+          yarn install --ignore-scripts --network-timeout 300000
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download all artifacts
         uses: actions/download-artifact@v2
