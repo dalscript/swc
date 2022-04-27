@@ -23,10 +23,10 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/swc-project/swc.git"
+        "url": "git+https://github.com/odenlang/swc.git"
     },
     "bugs": {
-        "url": "https://github.com/swc-project/swc/issues"
+        "url": "https://github.com/odenlang/swc/issues"
     },
     "napi": {
         "name": "swc",
@@ -119,5 +119,20 @@
     "funding": {
         "type": "opencollective",
         "url": "https://opencollective.com/swc"
+    },
+    "optionalDependencies": {
+        "@odenlang/swc-core-android-arm-eabi": "0.0.0",
+        "@odenlang/swc-core-android-arm64": "0.0.0",
+        "@odenlang/swc-core-darwin-arm64": "0.0.0",
+        "@odenlang/swc-core-darwin-x64": "0.0.0",
+        "@odenlang/swc-core-freebsd-x64": "0.0.0",
+        "@odenlang/swc-core-linux-arm-gnueabihf": "0.0.0",
+        "@odenlang/swc-core-linux-arm64-gnu": "0.0.0",
+        "@odenlang/swc-core-linux-arm64-musl": "0.0.0",
+        "@odenlang/swc-core-linux-x64-gnu": "0.0.0",
+        "@odenlang/swc-core-linux-x64-musl": "0.0.0",
+        "@odenlang/swc-core-win32-arm64-msvc": "0.0.0",
+        "@odenlang/swc-core-win32-ia32-msvc": "0.0.0",
+        "@odenlang/swc-core-win32-x64-msvc": "0.0.0"
     }
 }
