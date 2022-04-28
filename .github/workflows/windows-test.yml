@@ -15,8 +15,8 @@ jobs:
           check-latest: true
       - name: Install dependencies
         run: |
-          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ~/.npmrc
-          echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ${{ github.workspace }}/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ${{ github.workspace }}/.npmrc
           yarn init -y
           yarn add @odenlang/swc-core-android-arm-eabi
         env:
