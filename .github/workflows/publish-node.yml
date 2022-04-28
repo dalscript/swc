@@ -599,7 +599,7 @@ jobs:
       - test-linux-x64-musl-binding
       - test-linux-aarch64-gnu-binding
       - test-linux-arm-gnueabihf-binding
-      - test-macOS-windows-binding
+      # - test-macOS-windows-binding
       - test-linux-aarch64-musl-binding
       - build-freebsd
     steps:
