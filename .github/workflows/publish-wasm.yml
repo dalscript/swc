@@ -46,7 +46,7 @@ jobs:
         working-directory: crates/binding_core_wasm
         run: |
           wasm-pack build --out-name wasm --release --scope=swc --target nodejs
-          sed -i -e 's/"name": "@swc\/binding_core_wasm"/"name": "@odenlang\/swc-wasm-test"/g' pkg/package.json
+          sed -i -e 's/"name": "@swc\/binding_core_wasm"/"name": "@odenlang\/swc-wasm"/g' pkg/package.json
           sed -i -e 's/swc-project/odenlang/g' pkg/package.json
 
       - name: Publish
@@ -92,7 +92,7 @@ jobs:
         working-directory: crates/binding_core_wasm
         run: |
           wasm-pack build --out-name wasm-web --release --scope=swc --target web
-          sed -i -e 's/"name": "@swc\/binding_core_wasm"/"name": "@odenlang\/swc-wasm-web-test"/g' pkg/package.json
+          sed -i -e 's/"name": "@swc\/binding_core_wasm"/"name": "@odenlang\/swc-wasm-web"/g' pkg/package.json
           sed -i -e 's/swc-project/odenlang/g' pkg/package.json
 
       - name: Publish
