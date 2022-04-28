@@ -1,21 +1,18 @@
 use rustc_hash::FxHashSet;
 use swc_atoms::{js_word, JsWord};
-use swc_common::{collections::AHashMap, SyntaxContext};
+use swc_common::collections::AHashMap;
 use swc_ecma_ast::*;
 use swc_ecma_transforms_base::hygiene::rename;
 use swc_ecma_visit::{
     noop_visit_mut_type, noop_visit_type, visit_obj_and_computed, Visit, VisitMut, VisitMutWith,
     VisitWith,
 };
+use tracing::info;
 
 use super::{analyzer::Analyzer, preserver::idents_to_preserve};
-use crate::{marks::Marks, option::MangleOptions};
+use crate::{debug::dump, marks::Marks, option::MangleOptions};
 
-pub(crate) fn name_mangler(
-    options: MangleOptions,
-    _marks: Marks,
-    _top_level_ctxt: SyntaxContext,
-) -> impl VisitMut {
+pub(crate) fn name_mangler(options: MangleOptions, _marks: Marks) -> impl VisitMut {
     Mangler {
         options,
         preserved: Default::default(),
@@ -92,14 +89,21 @@ impl VisitMut for Mangler {
     fn visit_mut_module(&mut self, m: &mut Module) {
         self.preserved = idents_to_preserve(self.options.clone(), &*m);
 
-        if self.contains_eval(m) {
-            m.visit_mut_children_with(self);
-            return;
+        if option_env!("DEBUG_MANGLER") == Some("1") {
+            info!("Before: {}", dump(&*m, true));
         }
 
-        let map = self.get_map(m);
+        if self.contains_eval(m) {
+            m.visit_mut_children_with(self);
+        } else {
+            let map = self.get_map(m);
 
-        m.visit_mut_with(&mut rename(&map));
+            m.visit_mut_with(&mut rename(&map));
+        }
+
+        if option_env!("DEBUG_MANGLER") == Some("1") {
+            info!("After: {}", dump(&*m, true));
+        }
     }
 
     fn visit_mut_script(&mut self, s: &mut Script) {

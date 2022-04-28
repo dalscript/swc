@@ -9,7 +9,10 @@ pub mod terser;
 /// This is not serializable.
 #[derive(Debug)]
 pub struct ExtraOptions {
-    /// The [Mark] used for `resolver_with_mark`.
+    /// It should be the [Mark] used for `resolver`.
+    pub unresolved_mark: Mark,
+
+    /// It should be the [Mark] used for `resolver`.
     pub top_level_mark: Mark,
 }
 
@@ -166,7 +169,7 @@ pub struct CompressOptions {
     #[serde(alias = "hoist_funs")]
     pub hoist_fns: bool,
 
-    #[serde(default = "true_by_default")]
+    #[serde(default)]
     #[serde(alias = "hoist_props")]
     pub hoist_props: bool,
 

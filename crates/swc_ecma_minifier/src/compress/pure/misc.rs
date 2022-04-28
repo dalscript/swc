@@ -1,7 +1,7 @@
 use std::{fmt::Write, num::FpCategory};
 
 use swc_atoms::{js_word, JsWord};
-use swc_common::{iter::IdentifyLast, util::take::Take, Span, DUMMY_SP};
+use swc_common::{iter::IdentifyLast, util::take::Take, EqIgnoreSpan, Span, DUMMY_SP};
 use swc_ecma_ast::*;
 use swc_ecma_utils::ident::IdentLike;
 
@@ -208,6 +208,81 @@ impl Pure<'_> {
                 self.changed = true;
                 report_change!("Dropped `undefined` from `return undefined`");
                 s.arg.take();
+            }
+        }
+    }
+
+    pub(super) fn remove_duplicate_returns(&mut self, stmts: &mut Vec<Stmt>) {
+        fn drop_if_identical(last: &Stmt, check: &mut Stmt) -> bool {
+            if check.eq_ignore_span(last) {
+                check.take();
+                return true;
+            }
+
+            match check {
+                Stmt::Try(TryStmt {
+                    finalizer: Some(finalizer),
+                    ..
+                }) => {
+                    if let Some(check) = finalizer.stmts.last_mut() {
+                        if drop_if_identical(last, check) {
+                            return true;
+                        }
+                    }
+                }
+
+                Stmt::Try(TryStmt {
+                    handler: Some(CatchClause { body, .. }),
+                    finalizer: None,
+                    ..
+                }) => {
+                    if let Some(check) = body.stmts.last_mut() {
+                        if drop_if_identical(last, check) {
+                            return true;
+                        }
+                    }
+                }
+
+                Stmt::If(IfStmt { cons, alt, .. }) => {
+                    let mut changed = drop_if_identical(last, cons);
+                    if let Some(alt) = alt {
+                        if drop_if_identical(last, alt) {
+                            changed = true;
+                        }
+                    }
+
+                    return changed;
+                }
+
+                Stmt::Switch(SwitchStmt { cases, .. }) => {
+                    for case in cases {
+                        if let Some(check) = case.cons.last_mut() {
+                            if drop_if_identical(last, check) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+
+                _ => {}
+            }
+
+            false
+        }
+
+        if stmts.is_empty() {
+            return;
+        }
+
+        let orig_len = stmts.len();
+        let (a, b) = stmts.split_at_mut(orig_len - 1);
+
+        if let Some(last @ Stmt::Return(..)) = b.last() {
+            if let Some(stmt_before_last) = a.last_mut() {
+                if drop_if_identical(last, stmt_before_last) {
+                    self.changed = true;
+                    report_change!("Dropped duplicate return");
+                }
             }
         }
     }
@@ -489,7 +564,7 @@ impl Pure<'_> {
 
         if let Expr::Ident(i) = e {
             // If it's not a top level, it's a reference to a declared variable.
-            if i.span.ctxt.outer() == self.marks.top_level_mark {
+            if i.span.ctxt.outer() == self.marks.unresolved_mark {
                 if self.options.side_effects
                     || (self.options.unused && opts.drop_global_refs_if_unused)
                 {
@@ -580,14 +655,12 @@ impl Pure<'_> {
                 }
 
                 Expr::Ident(i) => {
-                    if let Some(bindings) = self.bindings.as_deref() {
-                        if bindings.contains(&i.to_id()) {
-                            report_change!("Dropping an identifier as it's declared");
+                    if i.span.ctxt.outer() != self.marks.unresolved_mark {
+                        report_change!("Dropping an identifier as it's declared");
 
-                            self.changed = true;
-                            *e = Expr::Invalid(Invalid { span: DUMMY_SP });
-                            return;
-                        }
+                        self.changed = true;
+                        *e = Expr::Invalid(Invalid { span: DUMMY_SP });
+                        return;
                     }
                 }
 
@@ -736,14 +809,11 @@ impl Pure<'_> {
         // Remove pure member expressions.
         if let Expr::Member(MemberExpr { obj, prop, .. }) = e {
             if let Expr::Ident(obj) = &**obj {
-                if obj.span.ctxt.outer() == self.marks.top_level_mark {
-                    if let Some(bindings) = self.bindings.as_deref() {
-                        if !bindings.contains(&obj.to_id()) {
-                            if is_pure_member_access(obj, prop) {
-                                self.changed = true;
-                                *e = Expr::Invalid(Invalid { span: DUMMY_SP });
-                            }
-                        }
+                if obj.span.ctxt.outer() == self.marks.unresolved_mark {
+                    if is_pure_member_access(obj, prop) {
+                        self.changed = true;
+                        report_change!("Remving pure member access to global var");
+                        *e = Expr::Invalid(Invalid { span: DUMMY_SP });
                     }
                 }
             }

@@ -36,7 +36,7 @@ use swc_ecma_parser::{
     lexer::{input::SourceFileInput, Lexer},
     EsConfig, Parser, Syntax,
 };
-use swc_ecma_transforms_base::{fixer::fixer, hygiene::hygiene, resolver::resolver_with_mark};
+use swc_ecma_transforms_base::{fixer::fixer, hygiene::hygiene, resolver};
 use swc_ecma_utils::drop_span;
 use swc_ecma_visit::{FoldWith, Visit, VisitMutWith, VisitWith};
 use testing::{assert_eq, DebugUsingDisplay, NormalizedOutput};
@@ -172,7 +172,8 @@ fn run(
         }
     }
 
-    let top_level_mark = Mark::fresh(Mark::root());
+    let unresolved_mark = Mark::new();
+    let top_level_mark = Mark::new();
 
     let minification_start = Instant::now();
 
@@ -192,7 +193,7 @@ fn run(
         .map_err(|err| {
             err.into_diagnostic(handler).emit();
         })
-        .map(|module| module.fold_with(&mut resolver_with_mark(top_level_mark)));
+        .map(|module| module.fold_with(&mut resolver(unresolved_mark, top_level_mark, false)));
 
     // Ignore parser errors.
     //
@@ -225,7 +226,10 @@ fn run(
             }),
             ..Default::default()
         },
-        &ExtraOptions { top_level_mark },
+        &ExtraOptions {
+            unresolved_mark,
+            top_level_mark,
+        },
     );
     let end = Instant::now();
     tracing::info!(
@@ -339,11 +343,37 @@ fn projects(input: PathBuf) {
             None => return Ok(()),
         };
 
-        let output = print(cm, &[output_module], false, false);
+        let output = print(cm.clone(), &[output_module], false, false);
 
         eprintln!("---- {} -----\n{}", Color::Green.paint("Output"), output);
 
         println!("{}", input.display());
+
+        let minified = {
+            let output = run(
+                cm.clone(),
+                &handler,
+                &input,
+                r#"{ "defaults": true, "toplevel": true, "passes": 3 }"#,
+                Some(TestMangleOptions::Normal(MangleOptions {
+                    top_level: true,
+                    ..Default::default()
+                })),
+                false,
+            );
+            let output_module = match output {
+                Some(v) => v,
+                None => return Ok(()),
+            };
+
+            print(cm, &[output_module], true, true)
+        };
+
+        eprintln!(
+            "---- {} -----\n{}",
+            Color::Green.paint("Size"),
+            minified.len()
+        );
 
         NormalizedOutput::from(output)
             .compare_to_file(

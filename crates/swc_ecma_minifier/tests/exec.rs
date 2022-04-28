@@ -23,7 +23,7 @@ use swc_ecma_minifier::{
     },
 };
 use swc_ecma_parser::{parse_file_as_module, EsConfig, Syntax};
-use swc_ecma_transforms_base::{fixer::fixer, hygiene::hygiene, resolver::resolver_with_mark};
+use swc_ecma_transforms_base::{fixer::fixer, hygiene::hygiene, resolver};
 use swc_ecma_visit::{FoldWith, VisitMutWith};
 use testing::DebugUsingDisplay;
 use tracing::{info, span, Level};
@@ -114,7 +114,8 @@ fn run(
 
     eprintln!("---- {} -----\n{}", Color::Green.paint("Input"), fm.src);
 
-    let top_level_mark = Mark::fresh(Mark::root());
+    let unresolved_mark = Mark::new();
+    let top_level_mark = Mark::new();
 
     let program = parse_file_as_module(
         &fm,
@@ -129,7 +130,7 @@ fn run(
     .map_err(|err| {
         err.into_diagnostic(handler).emit();
     })
-    .map(|module| module.fold_with(&mut resolver_with_mark(top_level_mark)));
+    .map(|module| module.fold_with(&mut resolver(unresolved_mark, top_level_mark, false)));
 
     // Ignore parser errors.
     //
@@ -151,7 +152,10 @@ fn run(
             mangle,
             ..Default::default()
         },
-        &ExtraOptions { top_level_mark },
+        &ExtraOptions {
+            unresolved_mark,
+            top_level_mark,
+        },
     );
 
     if run_hygiene {
@@ -9784,4 +9788,72 @@ fn try_catch_5() {
     "###;
 
     run_default_exec_test(src);
+}
+
+#[test]
+fn issue_4444_1() {
+    let src = r###"
+    const test = () => {
+        let a = 0;
+        let b = 0;
+        let c = [1, 2, 3, 4, 5].map((i) => {
+          a += i;
+          b += i;
+          return i;
+        });
+        return [a, b, c];
+      };
+      
+      const [a, b, c] = test();
+      console.log("test", a, b, c);
+    "###;
+
+    let config = r###"
+    {
+        "arguments": false,
+        "arrows": false,
+        "booleans": true,
+        "booleans_as_integers": false,
+        "collapse_vars": true,
+        "comparisons": true,
+        "computed_props": false,
+        "conditionals": false,
+        "dead_code": false,
+        "directives": false,
+        "drop_console": false,
+        "drop_debugger": true,
+        "evaluate": false,
+        "expression": false,
+        "hoist_funs": false,
+        "hoist_props": false,
+        "hoist_vars": false,
+        "if_return": true,
+        "join_vars": false,
+        "keep_classnames": false,
+        "keep_fargs": true,
+        "keep_fnames": false,
+        "keep_infinity": false,
+        "loops": true,
+        "negate_iife": false,
+        "properties": true,
+        "reduce_funcs": false,
+        "reduce_vars": false,
+        "side_effects": true,
+        "switches": false,
+        "typeofs": false,
+        "unsafe": false,
+        "unsafe_arrows": false,
+        "unsafe_comps": false,
+        "unsafe_Function": false,
+        "unsafe_math": false,
+        "unsafe_symbols": false,
+        "unsafe_methods": false,
+        "unsafe_proto": false,
+        "unsafe_regexp": false,
+        "unsafe_undefined": false,
+        "unused": true
+      }
+    "###;
+
+    run_exec_test(src, config, false);
 }

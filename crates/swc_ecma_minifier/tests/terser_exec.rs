@@ -27,7 +27,7 @@ use swc_ecma_parser::{
     lexer::{input::SourceFileInput, Lexer},
     EsConfig, Parser, Syntax,
 };
-use swc_ecma_transforms_base::{fixer::fixer, hygiene::hygiene, resolver::resolver_with_mark};
+use swc_ecma_transforms_base::{fixer::fixer, hygiene::hygiene, resolver};
 use swc_ecma_visit::{FoldWith, VisitMutWith};
 use testing::assert_eq;
 
@@ -58,6 +58,12 @@ use testing::assert_eq;
         "properties/issue_3188_3/",
         "rename/function_catch_catch/",
         "yield/issue_2689/",
+        // tests with infinite loops
+        "reduce_vars/toplevel_off_loops_2",
+        "reduce_vars/toplevel_on_loops_2",
+        "drop_unused/issue_1656",
+        "transform/condition_evaluate",
+        "reduce_vars/var_assign_3",
     )
 )]
 fn terser_exec(input: PathBuf) {
@@ -174,7 +180,8 @@ fn run(cm: Lrc<SourceMap>, handler: &Handler, input: &Path, config: &str) -> Opt
 
     eprintln!("---- {} -----\n{}", Color::Green.paint("Input"), fm.src);
 
-    let top_level_mark = Mark::fresh(Mark::root());
+    let unresolved_mark = Mark::new();
+    let top_level_mark = Mark::new();
 
     let minification_start = Instant::now();
 
@@ -194,7 +201,7 @@ fn run(cm: Lrc<SourceMap>, handler: &Handler, input: &Path, config: &str) -> Opt
         .map_err(|err| {
             err.into_diagnostic(handler).emit();
         })
-        .map(|module| module.fold_with(&mut resolver_with_mark(top_level_mark)));
+        .map(|module| module.fold_with(&mut resolver(unresolved_mark, top_level_mark, false)));
 
     // Ignore parser errors.
     //
@@ -215,7 +222,10 @@ fn run(cm: Lrc<SourceMap>, handler: &Handler, input: &Path, config: &str) -> Opt
             mangle: None,
             ..Default::default()
         },
-        &ExtraOptions { top_level_mark },
+        &ExtraOptions {
+            unresolved_mark,
+            top_level_mark,
+        },
     );
     let end = Instant::now();
     tracing::info!(

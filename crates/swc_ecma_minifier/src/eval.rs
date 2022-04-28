@@ -74,7 +74,7 @@ impl Evaluator {
                     m.fold_with(&mut compressor(
                         globals,
                         marks,
-                        &serde_json::from_str("{}").unwrap(),
+                        &serde_json::from_str("{ \"hoist_props\": true }").unwrap(),
                         &data,
                     ))
                 })
@@ -192,7 +192,7 @@ impl Evaluator {
                 });
 
                 e.visit_mut_with(&mut expr_simplifier(
-                    self.marks.top_level_mark,
+                    self.marks.unresolved_mark,
                     ExprSimplifierConfig {},
                 ));
                 return Some(Box::new(e));

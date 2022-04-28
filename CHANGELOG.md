@@ -5,6 +5,85 @@
 
 
 
+- **(es/minifier)** Disable some passes for `hoist_props` (#4468) ([effc85d](https://github.com/swc-project/swc/commit/effc85df572609a180f9a28177a5b37ed960c860))
+
+
+- **(es/minifier)** Fix skipping logic of sequential inliner (#4469) ([233c4d5](https://github.com/swc-project/swc/commit/233c4d5b860d557710bfe654f76d7901e5d0b3a0))
+
+
+- **(html)** Fix bugs of parser and codegen (#4461) ([8bdfcd9](https://github.com/swc-project/swc/commit/8bdfcd996aa5abde0e50743b90f4d36fd25003ba))
+
+
+- **(html/parser)** Fix bugs (#4459) ([2098228](https://github.com/swc-project/swc/commit/20982288fb05dcb4e2c72e5ea4c0888a0e946580))
+
+### Features
+
+
+
+- **(es/minifier)** Drop more returns (#4471) ([2739546](https://github.com/swc-project/swc/commit/273954640aa2d22d0e65f4d186bcb6add0844cb1))
+
+### Miscellaneous Tasks
+
+
+
+- **(es/minifier)** Update debugging utils (#4467) ([c45b0df](https://github.com/swc-project/swc/commit/c45b0df8770727b84ede1c3348c9769f5d4367c2))
+
+## [1.2.173] - 2022-04-28
+
+### Bug Fixes
+
+
+
+- **(es)** Remove wrong debug assertion (#4445) ([962cf4a](https://github.com/swc-project/swc/commit/962cf4a08caaee6dc0579aed556df55bc60bf093))
+
+
+- **(es/async-generator)** Fix `yield*` in async generators (#4452) ([0bc0bae](https://github.com/swc-project/swc/commit/0bc0bae90dcf6f448f45d35edc02ce025c0d8114))
+
+
+- **(es/parser)** Throw syntax error for missing function expr body (#4462) ([393cfa8](https://github.com/swc-project/swc/commit/393cfa84b65264a07f90387a0f7852535d87cd6d))
+
+
+- **(es/preset-env)** Do not import new features when using old core-js (#4458) ([4262874](https://github.com/swc-project/swc/commit/4262874ce458260fc6a7d363522b5c6591df93b3))
+
+
+- **(html/parser)** Fix a bug with nested tags (#4438) ([8c4dc4c](https://github.com/swc-project/swc/commit/8c4dc4cc46e73265ad45e63fecd513f4ba4cf7bb))
+
+
+- **(html/parser)** Parse table including broken one (#4451) ([6e60813](https://github.com/swc-project/swc/commit/6e6081336714861055a1ae148f1305e2ab180efc))
+
+
+- **(html/parser)** Fix fosting logic for text nodes (#4457) ([65a158a](https://github.com/swc-project/swc/commit/65a158a66b2a394f70757ae363ab329ced71436f))
+
+### Features
+
+
+
+- **(es/parser)** Reject indirect opt chain in assignment (#4447) ([df7b3f6](https://github.com/swc-project/swc/commit/df7b3f611a7bf5509e143cf81a69e0443cf80288))
+
+
+- **(html/minifier)** Compress whitespaces (#4463) ([0ae4350](https://github.com/swc-project/swc/commit/0ae43502f3f54ad7d77b790c9f1ad2af63d32090))
+
+### Miscellaneous Tasks
+
+
+
+- **(es/minifier)** Don't run tests with infinite loops (#4448) ([ec7dfb9](https://github.com/swc-project/swc/commit/ec7dfb92098897d9b8dbe5726bef78ea2a868053))
+
+### Testing
+
+
+
+- **(html/codegen)** Improve fixture testing (#4450) ([f30e771](https://github.com/swc-project/swc/commit/f30e7717a20348af2f6ef65bb7ff800fbffeadb4))
+
+## [1.2.172] - 2022-04-26
+
+### Bug Fixes
+
+
+
+- **(es/ast)** Fix tag of `BigInt` (#4440) ([2813eaa](https://github.com/swc-project/swc/commit/2813eaadcd0703b9f8c11d77f91c70cd002c9296))
+
+
 - **(es/minifier)** Remove the last break in the last `BlockStmt` (#4413) ([83244ad](https://github.com/swc-project/swc/commit/83244add338c3dd1a1a84fec94b73d1931699cdb))
 
 
@@ -20,6 +99,9 @@
 - **(es/minifier)** Remove wrong logic for optimizing `delete`s (#4429) ([8118569](https://github.com/swc-project/swc/commit/8118569045135e06fcaadc61255b9ca09ef120ea))
 
 
+- **(es/parser)** Fix top-level await with binary expr (#4426) ([465cc2f](https://github.com/swc-project/swc/commit/465cc2f92907ebd4ad4a659eca18b6ca2bc426a7))
+
+
 - **(html/lexer)** Fix lexing of html entity (#4423) ([9b26dbd](https://github.com/swc-project/swc/commit/9b26dbd45763fbf48dd81a1652608cc90736fe4f))
 
 
@@ -27,6 +109,12 @@
 
 
 - **(html/parser)** Fix parsing of foreign elements (#4422) ([4ccbdf2](https://github.com/swc-project/swc/commit/4ccbdf2a7d6419552db6b34586a32fef52b200bd))
+
+
+- **(html/parser)** Fix span (#4437) ([3293060](https://github.com/swc-project/swc/commit/329306007018d733bc9d348cd4a5dc839768b3e8))
+
+
+- **(html/parsing)** Fix parsing of formatting elements (#4442) ([8f2a3ea](https://github.com/swc-project/swc/commit/8f2a3ead6a56c47ae867c40ac863346a0e6bc88a))
 
 ### Features
 
@@ -42,6 +130,9 @@
 
 
 - **(es/parser)** Reject `'use strict'` with non-simple params list in TS (#4416) ([6dc64c9](https://github.com/swc-project/swc/commit/6dc64c9ca0bccf27b325d3298f4ed7f07eaaa076))
+
+
+- **(es/resolver)** Use different syntax context for unresolved refs (#4436) ([53610fd](https://github.com/swc-project/swc/commit/53610fdafc83d25f0a5132b3381737aaffb1a29d))
 
 
 - **(html)** Prepare processing system (#4358) ([7332dce](https://github.com/swc-project/swc/commit/7332dce4f801546f0c5f29b6919feaaebebc435a))
@@ -62,7 +153,13 @@
 - **(html/minifier)** Compress doctype (#4425) ([6fc70f3](https://github.com/swc-project/swc/commit/6fc70f3866e4d60867a3ae38ae40c8f46065153c))
 
 
+- **(html/minifier)** Compress default values of attributes (#4427) ([4c699f2](https://github.com/swc-project/swc/commit/4c699f2554157333f0598cd4f8143f536027d396))
+
+
 - **(node/css)** Add css bindings crate (#4346) ([6a19ff1](https://github.com/swc-project/swc/commit/6a19ff1a152b67b15714c0290eb21ede878692e5))
+
+
+- **(preset-env/base)** Update "browserslist-rs" (#4435) ([1c2af93](https://github.com/swc-project/swc/commit/1c2af932b68cae34805b4ab789d6f2ccb4171fa4))
 
 ### Miscellaneous Tasks
 
