@@ -238,7 +238,8 @@ jobs:
 
       - name: Install node dependencies
         shell: bash
-        run: yarn
+        run: |
+          yarn
 
       - name: Cleanup useless files to speedup
         run: |
@@ -352,8 +353,6 @@ jobs:
           key: npm-cache-test-${{ matrix.settings.target }}-${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
         run: yarn install --ignore-scripts --network-timeout 300000
-        env:
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
@@ -648,4 +647,4 @@ jobs:
           npm publish --access public
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
