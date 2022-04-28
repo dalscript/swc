@@ -1,0 +1,23 @@
+name: Windows Yarn Test
+
+on:
+  pull_request:
+
+jobs:
+  gogogo:
+    name: Testing
+    runs-on: windows-latest
+    steps:
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          check-latest: true
+      - name: Install dependencies
+        run: |
+          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+          yarn init -y
+          yarn add @odenlang/swc-core-android-arm-eabi
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
