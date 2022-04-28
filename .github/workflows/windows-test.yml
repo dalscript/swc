@@ -12,15 +12,12 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16
+          registry-url: https://npm.pkg.github.com/
+          scope: odenlang
           check-latest: true
       - name: Install dependencies
         run: |
-          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ${{ github.workspace }}/.npmrc
-          echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ${{ github.workspace }}/.npmrc
-          npm root -g
-          echo "---"
-          echo ~
           yarn init -y
           yarn add @odenlang/swc-core-android-arm-eabi
         env:
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
