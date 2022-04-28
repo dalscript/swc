@@ -176,7 +176,8 @@ jobs:
           target: ${{ matrix.settings.target }}
       - name: Install node dependencies
         shell: bash
-        run: yarn
+        run: |
+          yarn
       - name: Cache cargo registry
         uses: actions/cache@v2
         with:
@@ -481,7 +482,12 @@ jobs:
           path: node_modules
           key: npm-cache-test-linux-aarch64-gnu-${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: yarn install --ignore-scripts --ignore-platform --network-timeout 300000
+        run: |
+          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+          yarn install --ignore-scripts --ignore-platform --network-timeout 300000
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build TypeScript
         run: yarn build:ts
       - name: Setup and run tests
@@ -516,7 +522,12 @@ jobs:
           path: node_modules
           key: npm-cache-test-linux-aarch64-musl-${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: yarn install --ignore-scripts --ignore-platform --network-timeout 300000
+        run: |
+          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+          yarn install --ignore-scripts --ignore-platform --network-timeout 300000
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build TypeScript
         run: yarn build:ts
       - name: Setup and run tests
@@ -558,7 +569,12 @@ jobs:
           path: node_modules
           key: npm-cache-test-linux-arm-gnueabihf-${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: yarn install --ignore-scripts --ignore-platform --network-timeout 300000
+        run: |
+          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+          yarn install --ignore-scripts --ignore-platform --network-timeout 300000
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build TypeScript
         run: yarn build:ts
       - name: Setup and run tests
@@ -627,4 +643,9 @@ jobs:
         shell: bash
 
       - name: Publish
-        run: npm publish --access public
+        run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+          npm publish --access public
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}

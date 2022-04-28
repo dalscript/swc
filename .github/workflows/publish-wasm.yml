@@ -2,8 +2,8 @@ name: Publish (wasm)
 
 env:
   CARGO_INCREMENTAL: 0
-  CARGO_PROFILE_RELEASE_LTO: 'fat'
-  CI: '1'
+  CARGO_PROFILE_RELEASE_LTO: "fat"
+  CI: "1"
 
 on:
   create:
@@ -23,6 +23,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14
+          registry-url: https://npm.pkg.github.com/
+          scope: odenlang
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cache
         uses: actions/cache@v2
@@ -33,12 +37,7 @@ jobs:
           key: ${{ runner.os }}-publish-integration
 
       - name: Install node dependencies
-        run: |
-          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ~/.npmrc
-          echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
-          yarn
-        env:
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: yarn
 
       - name: Install wasm-pack
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
@@ -52,7 +51,11 @@ jobs:
 
       - name: Publish
         run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
           (cd crates/binding_core_wasm/pkg && npm publish --access public --registry https://npm.pkg.github.com/)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-web:
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
@@ -66,6 +69,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14
+          registry-url: https://npm.pkg.github.com/
+          scope: odenlang
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cache
         uses: actions/cache@v2
@@ -76,12 +83,7 @@ jobs:
           key: ${{ runner.os }}-publish-integration
 
       - name: Install node dependencies
-        run: |
-          echo "@odenlang:registry=https://npm.pkg.github.com/" >> ~/.npmrc
-          echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
-          yarn
-        env:
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: yarn
 
       - name: Install wasm-pack
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
@@ -95,4 +97,8 @@ jobs:
 
       - name: Publish
         run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
           (cd crates/binding_core_wasm/pkg && npm publish --access public --registry https://npm.pkg.github.com/)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
