@@ -1,6 +1,6 @@
 {
     "name": "@odenlang/swc-core",
-    "version": "1.2.146",
+    "version": "1.2.171",
     "description": "Super-fast alternative for babel",
     "homepage": "https://swc.rs",
     "main": "./index.js",
