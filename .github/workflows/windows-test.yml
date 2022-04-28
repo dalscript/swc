@@ -18,6 +18,4 @@ jobs:
       - name: Install dependencies
         run: |
           yarn init -y
-          yarn add @odenlang/swc-core-android-arm-eabi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          yarn add @odenlang/swc-core-win32-x64-msvc
