@@ -402,10 +402,13 @@ impl VisitMut for Fixer<'_> {
         if let Expr::Bin(ref mut e2) = *e {
             if e2.op == op!("|>") {
                 if let Expr::Call(call) = &mut *e2.right {
-                    call.args.insert(0, ExprOrSpread {
-                        spread: None,
-                        expr: e2.left.clone()
-                    });
+                    call.args.insert(
+                        0,
+                        ExprOrSpread {
+                            spread: None,
+                            expr: e2.left.clone(),
+                        },
+                    );
                     *e = *e2.right.clone();
                     return;
                 }
