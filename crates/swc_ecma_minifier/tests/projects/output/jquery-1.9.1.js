@@ -344,7 +344,7 @@
                     "notify",
                     "progress",
                     jQuery.Callbacks("memory")
-                ]
+                ], 
             ], state = "pending", promise = {
                 state: function() {
                     return state;
@@ -701,8 +701,8 @@
         propFix: {
             tabindex: "tabIndex",
             readonly: "readOnly",
-            "for": "htmlFor",
-            "class": "className",
+            for: "htmlFor",
+            class: "className",
             maxlength: "maxLength",
             cellspacing: "cellSpacing",
             cellpadding: "cellPadding",
@@ -865,24 +865,26 @@
             var handle, ontype, cur, bubbleType, special, tmp, i, eventPath = [
                 elem || document1
             ], type = core_hasOwn.call(event, "type") ? event.type : event, namespaces = core_hasOwn.call(event, "namespace") ? event.namespace.split(".") : [];
-            if (cur = tmp = elem = elem || document1, 3 !== elem.nodeType && 8 !== elem.nodeType && !rfocusMorph.test(type + jQuery.event.triggered) && (type.indexOf(".") >= 0 && (type = (namespaces = type.split(".")).shift(), namespaces.sort()), ontype = 0 > type.indexOf(":") && "on" + type, (event = event[jQuery.expando] ? event : new jQuery.Event(type, "object" == typeof event && event)).isTrigger = !0, event.namespace = namespaces.join("."), event.namespace_re = event.namespace ? new RegExp("(^|\\.)" + namespaces.join("\\.(?:.*\\.|)") + "(\\.|$)") : null, event.result = undefined, event.target || (event.target = elem), data = null == data ? [
-                event
-            ] : jQuery.makeArray(data, [
-                event
-            ]), special = jQuery.event.special[type] || {}, onlyHandlers || !special.trigger || !1 !== special.trigger.apply(elem, data))) {
-                if (!onlyHandlers && !special.noBubble && !jQuery.isWindow(elem)) {
-                    for(bubbleType = special.delegateType || type, rfocusMorph.test(bubbleType + type) || (cur = cur.parentNode); cur; cur = cur.parentNode)eventPath.push(cur), tmp = cur;
-                    tmp === (elem.ownerDocument || document1) && eventPath.push(tmp.defaultView || tmp.parentWindow || window1);
+            if (cur = tmp = elem = elem || document1, 3 !== elem.nodeType && 8 !== elem.nodeType) {
+                if (!rfocusMorph.test(type + jQuery.event.triggered) && (type.indexOf(".") >= 0 && (type = (namespaces = type.split(".")).shift(), namespaces.sort()), ontype = 0 > type.indexOf(":") && "on" + type, (event = event[jQuery.expando] ? event : new jQuery.Event(type, "object" == typeof event && event)).isTrigger = !0, event.namespace = namespaces.join("."), event.namespace_re = event.namespace ? new RegExp("(^|\\.)" + namespaces.join("\\.(?:.*\\.|)") + "(\\.|$)") : null, event.result = undefined, event.target || (event.target = elem), data = null == data ? [
+                    event
+                ] : jQuery.makeArray(data, [
+                    event
+                ]), special = jQuery.event.special[type] || {}, onlyHandlers || !special.trigger || !1 !== special.trigger.apply(elem, data))) {
+                    if (!onlyHandlers && !special.noBubble && !jQuery.isWindow(elem)) {
+                        for(bubbleType = special.delegateType || type, rfocusMorph.test(bubbleType + type) || (cur = cur.parentNode); cur; cur = cur.parentNode)eventPath.push(cur), tmp = cur;
+                        tmp === (elem.ownerDocument || document1) && eventPath.push(tmp.defaultView || tmp.parentWindow || window1);
+                    }
+                    for(i = 0; (cur = eventPath[i++]) && !event.isPropagationStopped();)event.type = i > 1 ? bubbleType : special.bindType || type, (handle = (jQuery._data(cur, "events") || {})[event.type] && jQuery._data(cur, "handle")) && handle.apply(cur, data), (handle = ontype && cur[ontype]) && jQuery.acceptData(cur) && handle.apply && !1 === handle.apply(cur, data) && event.preventDefault();
+                    if (event.type = type, !onlyHandlers && !event.isDefaultPrevented() && (!special._default || !1 === special._default.apply(elem.ownerDocument, data)) && !("click" === type && jQuery.nodeName(elem, "a")) && jQuery.acceptData(elem) && ontype && elem[type] && !jQuery.isWindow(elem)) {
+                        (tmp = elem[ontype]) && (elem[ontype] = null), jQuery.event.triggered = type;
+                        try {
+                            elem[type]();
+                        } catch (e) {}
+                        jQuery.event.triggered = undefined, tmp && (elem[ontype] = tmp);
+                    }
+                    return event.result;
                 }
-                for(i = 0; (cur = eventPath[i++]) && !event.isPropagationStopped();)event.type = i > 1 ? bubbleType : special.bindType || type, (handle = (jQuery._data(cur, "events") || {})[event.type] && jQuery._data(cur, "handle")) && handle.apply(cur, data), (handle = ontype && cur[ontype]) && jQuery.acceptData(cur) && handle.apply && !1 === handle.apply(cur, data) && event.preventDefault();
-                if (event.type = type, !onlyHandlers && !event.isDefaultPrevented() && (!special._default || !1 === special._default.apply(elem.ownerDocument, data)) && !("click" === type && jQuery.nodeName(elem, "a")) && jQuery.acceptData(elem) && ontype && elem[type] && !jQuery.isWindow(elem)) {
-                    (tmp = elem[ontype]) && (elem[ontype] = null), jQuery.event.triggered = type;
-                    try {
-                        elem[type]();
-                    } catch (e) {}
-                    jQuery.event.triggered = undefined, tmp && (elem[ontype] = tmp);
-                }
-                return event.result;
             }
         },
         dispatch: function(event) {
@@ -1122,7 +1124,7 @@
             needsContext: new RegExp("^" + whitespace + "*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" + whitespace + "*((?:-\\d)?\\d*)" + whitespace + "*\\)|)(?=[^-]|$)", "i")
         }, rsibling = /[\x20\t\r\n\f]*[+~]/, rnative = /^[^{]+\{\s*\[native code/, rquickExpr = /^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/, rinputs = /^(?:input|select|textarea|button)$/i, rheader = /^h\d$/i, rescape = /'|\\/g, rattributeQuotes = /\=[\x20\t\r\n\f]*([^'"\]]*)[\x20\t\r\n\f]*\]/g, runescape = /\\([\da-fA-F]{1,6}[\x20\t\r\n\f]?|.)/g, funescape = function(_, escaped) {
             var high = "0x" + escaped - 0x10000;
-            return high != high ? escaped : high < 0 ? String.fromCharCode(high + 0x10000) : String.fromCharCode(high >> 10 | 0xD800, 0x3FF & high | 0xDC00);
+            return high != high ? escaped : high < 0 ? String.fromCharCode(high + 0x10000) : String.fromCharCode(high >> 10 | 0xd800, 0x3ff & high | 0xdc00);
         };
         try {
             slice.call(preferredDoc.documentElement.childNodes, 0)[0].nodeType;
@@ -1422,7 +1424,7 @@
                             } else if (useCache && (cache = (elem[expando] || (elem[expando] = {}))[type]) && cache[0] === dirruns) diff = cache[1];
                             else for(; (node = ++nodeIndex && node && node[dir] || (diff = nodeIndex = 0) || start.pop()) && (!((ofType ? node.nodeName.toLowerCase() === name : 1 === node.nodeType) && ++diff) || (useCache && ((node[expando] || (node[expando] = {}))[type] = [
                                 dirruns,
-                                diff
+                                diff, 
                             ]), node !== elem)););
                             return (diff -= last) === first || diff % first == 0 && diff / first >= 0;
                         }
@@ -1628,7 +1630,7 @@
             }, implicitRelative, !0), matchers = [
                 function(elem, context, xml) {
                     return !leadingRelative && (xml || context !== outermostContext) || ((checkContext = context).nodeType ? matchContext(elem, context, xml) : matchAnyContext(elem, context, xml));
-                }
+                }, 
             ]; i < len; i++)if (matcher = Expr.relative[tokens[i].type]) matchers = [
                 addCombinator(elementMatcher(matchers), matcher)
             ];
@@ -2039,7 +2041,7 @@
                     dataType: "script",
                     async: !1,
                     global: !1,
-                    "throws": !0
+                    throws: !0
                 }) : jQuery.globalEval((node.text || node.textContent || node.innerHTML || "").replace(rcleanScript, "")));
                 fragment = first = null;
             }
@@ -2194,7 +2196,7 @@
             zoom: !0
         },
         cssProps: {
-            "float": jQuery.support.cssFloat ? "cssFloat" : "styleFloat"
+            float: jQuery.support.cssFloat ? "cssFloat" : "styleFloat"
         },
         style: function(elem, name, value, extra) {
             if (elem && 3 !== elem.nodeType && 8 !== elem.nodeType && elem.style) {
@@ -2255,7 +2257,7 @@
                     display: "inline-block"
                 }, curCSS, [
                     elem,
-                    "marginRight"
+                    "marginRight", 
                 ]);
             }
         }), !jQuery.support.pixelPosition && jQuery.fn.position && jQuery.each([
@@ -2335,7 +2337,7 @@
     }), jQuery.fn.hover = function(fnOver, fnOut) {
         return this.mouseenter(fnOver).mouseleave(fnOut || fnOver);
     };
-    var ajaxLocParts, ajaxLocation, ajax_nonce = jQuery.now(), ajax_rquery = /\?/, rhash = /#.*$/, rts = /([?&])_=[^&]*/, rheaders = /^(.*?):[ \t]*([^\r\n]*)\r?$/mg, rnoContent = /^(?:GET|HEAD)$/, rprotocol = /^\/\//, rurl = /^([\w.+-]+:)(?:\/\/([^\/?#:]*)(?::(\d+)|)|)/, _load = jQuery.fn.load, prefilters = {}, transports = {}, allTypes = "*/".concat("*");
+    var ajaxLocParts, ajaxLocation, ajax_nonce = jQuery.now(), ajax_rquery = /\?/, rhash = /#.*$/, rts = /([?&])_=[^&]*/, rheaders = /^(.*?):[ \t]*([^\r\n]*)\r?$/gm, rnoContent = /^(?:GET|HEAD)$/, rprotocol = /^\/\//, rurl = /^([\w.+-]+:)(?:\/\/([^\/?#:]*)(?::(\d+)|)|)/, _load = jQuery.fn.load, prefilters = {}, transports = {}, allTypes = "*/".concat("*");
     try {
         ajaxLocation = location.href;
     } catch (e1) {
@@ -2387,7 +2389,7 @@
         "ajaxComplete",
         "ajaxError",
         "ajaxSuccess",
-        "ajaxSend"
+        "ajaxSend", 
     ], function(i, type) {
         jQuery.fn[type] = function(fn) {
             return this.on(type, fn);
@@ -2575,7 +2577,7 @@
                 ]), jqXHR1.statusCode(statusCode), statusCode = undefined, fireGlobals && globalEventContext.trigger(isSuccess ? "ajaxSuccess" : "ajaxError", [
                     jqXHR1,
                     s1,
-                    isSuccess ? success : error
+                    isSuccess ? success : error, 
                 ]), completeDeferred.fireWith(callbackContext, [
                     jqXHR1,
                     statusText
@@ -2730,7 +2732,7 @@
                     tween.unit = unit, tween.start = start, tween.end = parts[1] ? start + (parts[1] + 1) * end : end;
                 }
                 return tween;
-            }
+            }, 
         ]
     };
     function createFxNow() {
